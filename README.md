@@ -2,7 +2,9 @@
 Updates 3c qfl multipair bot settings (maxactivedeals, take profit, qfl percent) based on BTC's 1d RSI and 1hr ATRp each minute
 
 MaxActiveDeals =  70 - RSI
+
 QFL% = ATRp * 5 
+
 TP% = ATRp * 1.5
 
 Also cycles through the qfl timeframe (original=1h, daytrade=2h, conservative=3h, position=4h) each minute
