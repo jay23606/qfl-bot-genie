@@ -36,6 +36,7 @@ namespace qflg
                     List<RsiResult> resultsDay = quotesDay.GetRsi().ToList();
                     int lastDay = resultsDay.Count - 1;
                     int deals = 70 - (int)resultsDay[lastDay].Rsi;
+                    if (deals < 1) deals = 1;
 
                     Console.WriteLine($"BTC 1 day RSI @ {DateTime.UtcNow.ToShortTimeString()} UTC is {Decimal.Round((decimal)resultsDay[lastDay].Rsi, 8)} -> set deals = 70-rsi = {deals}\n");
 
@@ -43,6 +44,7 @@ namespace qflg
                     int lastHour = resultsDay.Count - 1;
 
                     decimal qflp = Math.Round((decimal)resultsHour[lastHour].Atrp * 5m, 1);
+                    if (qflp < 3m) qflp = 3m;
                     decimal tp = Math.Round((decimal)resultsHour[lastHour].Atrp * 1.5m, 1);
 
                     Console.WriteLine($"BTC 1 hour nATR @ {DateTime.UtcNow.ToShortTimeString()} UTC is {Decimal.Round((decimal)resultsHour[lastHour].Atrp, 8)} -> set qfl% = nATR*5 = {qflp}, set tp% = nATR*1.5 = {tp}\n\n");
