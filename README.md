@@ -26,4 +26,4 @@ Create new console c# program and include your 3c api key, secret, botId, and ac
 You will need to include XCommas.Net and Stock.Indicators nuget packages
 
 
-Disclaimer: No idea how well this strategy will work over simply running static QFL
+*Disclaimer: No idea how well this strategy will work over simply running static QFL*
