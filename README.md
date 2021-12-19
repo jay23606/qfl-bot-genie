@@ -1,7 +1,7 @@
 # QFL Bot Genie
 
 
-Updates 3Commas QFL multipair bot settings (MaxActiveDeals, Take Profit, QFL Percentage) based on BTC's 1d RSI and 1h ATRp every few minutes
+##Updates 3Commas QFL multipair bot settings (MaxActiveDeals, Take Profit, QFL Percentage) based on BTC's 1d RSI and 1h ATRp every few minutes
 
 MaxActiveDeals =  RSI_SCALAR*(70 - RSI_VALUE)
 
@@ -18,7 +18,7 @@ TP% = ATRp * TP_SCALAR
 Also cycles through the QFL timeframes (original=1h, daytrade=2h, conservative=3h, position=4h) each time so that more QFL deals may be presented
 
 
-Instructions:
+##Instructions:
 
 Create new console c# program and include your 3c api key, secret, botId, and accountId (or exchange name) for updating bot settings
 
