@@ -12,6 +12,13 @@ namespace qflg
 {
     class Program
     {
+        //important constants
+        static float RSI_UPPER = 70f; //if BTC 1d RSI >= 69 then we only open a single active qfl deal
+        static float RSI_SCALAR = 1.0f; //increasing will produce more deals and reducing will produce less deals
+        static decimal QFLP_SCALAR = 3.5m; //factor we multiply by BTC 1h ATRp to determine QFL percentage
+        static decimal TP_SCALAR = 1.5m; //factor we multiply by BTC 1h ATRp to determine Take Profit percentage
+
+        //update with your 3c api key/secret and exchange info
         static string key = "xxx";
         static string secret = "xxx";
         static string market = "kucoin";
@@ -35,37 +42,42 @@ namespace qflg
 
                     List<RsiResult> resultsDay = quotesDay.GetRsi().ToList();
                     int lastDay = resultsDay.Count - 1;
-                    int deals = 70 - (int)resultsDay[lastDay].Rsi;
+                    int deals = (int)(RSI_SCALAR * (RSI_UPPER - (float)resultsDay[lastDay].Rsi));
                     if (deals < 1) deals = 1;
 
-                    Console.WriteLine($"BTC 1 day RSI @ {DateTime.UtcNow.ToShortTimeString()} UTC is {Decimal.Round((decimal)resultsDay[lastDay].Rsi, 8)} -> set deals = 70-rsi = {deals}\n");
+                    Console.WriteLine($"BTC 1 day RSI @ {DateTime.UtcNow.ToShortTimeString()} UTC is {Decimal.Round((decimal)resultsDay[lastDay].Rsi, 2)} -> set MaxActiveDeals = {RSI_SCALAR}*({RSI_UPPER} - RSI) = {deals}");
 
                     List<AtrResult> resultsHour = quotesHour.GetAtr().ToList();
                     int lastHour = resultsDay.Count - 1;
 
-                    decimal qflp = Math.Round((decimal)resultsHour[lastHour].Atrp * 5m, 1);
+                    decimal qflp = Math.Round((decimal)resultsHour[lastHour].Atrp * QFLP_SCALAR, 1);
                     if (qflp < 3m) qflp = 3m;
-                    decimal tp = Math.Round((decimal)resultsHour[lastHour].Atrp * 1.5m, 1);
+                    decimal tp = Math.Round((decimal)resultsHour[lastHour].Atrp * TP_SCALAR, 1);
 
-                    Console.WriteLine($"BTC 1 hour nATR @ {DateTime.UtcNow.ToShortTimeString()} UTC is {Decimal.Round((decimal)resultsHour[lastHour].Atrp, 8)} -> set qfl% = nATR*5 = {qflp}, set tp% = nATR*1.5 = {tp}\n\n");
+                    Console.WriteLine($"BTC 1 hour ATRp @ {DateTime.UtcNow.ToShortTimeString()} UTC is {Decimal.Round((decimal)resultsHour[lastHour].Atrp, 2)} -> set QFL % = ATRp*{QFLP_SCALAR} = {qflp}, set TP % = ATRp*{TP_SCALAR} = {tp}");
 
                     var bots = await api.GetBotsAsync(limit: 1, accountId: accountId, botId: botId);
 
                     Bot bot = bots.Data[0];
 
-                    //loop through qfl timeframes so that there might be more potential deals
-                    QflBotStrategy qfl = (QflBotStrategy)bot.Strategies[0];
-                    qfl.Options.Type++;
-                    if ((int)qfl.Options.Type > 3) qfl.Options.Type = 0;
-
-                    //set qfl percent based on 5 * nATR (get more picky as volatility expands)
-                    qfl.Options.Percent = qflp;
+                    //loop through qfl timeframes so that there is more potential deals
+                    foreach (BotStrategy bs in bot.Strategies)
+                    {
+                        if (bs is QflBotStrategy)
+                        {
+                            QflBotStrategy qfl = (QflBotStrategy)bs;
+                            qfl.Options.Type++;
+                            if ((int)qfl.Options.Type > 3) qfl.Options.Type = 0; //you could change this to 1 if you do not want Original 
+                            qfl.Options.Percent = qflp;
+                            break;
+                        }
+                    }
 
                     //set maxactivedeals based on 70 minus 1d RSI value
                     //we want to take on less risk as BTC becomes overbought
                     bot.MaxActiveDeals = deals;
 
-                    //set take profit using 1.5 * nATR
+                    //set take profit using 1.5 * ATRp
                     //idea: deals created during big dips should expect more profit
                     bot.TakeProfit = tp;
 
@@ -81,8 +93,8 @@ namespace qflg
                     hc = new HttpClient();
                     
                 }
-
-                await Task.Delay(1000 * 60 * 1);
+                //update every few minutes
+                await Task.Delay(1000 * 60 * 3);
             }
         }
 
