@@ -7,7 +7,7 @@ MaxActiveDeals =  RSI_SCALAR*(RSI_UPPER - RSI)
 
 (RSI_SCALAR defaulted to 1.0--this lets you increase or decrease deals relative to RSI value)
 
-(RSI_UPPER defaulted TO 70--once the RSI of BTC approaches this value we set MaxActiveDeals to 1)
+(RSI_UPPER defaulted TO 70--if the RSI of BTC approaches this value we set MaxActiveDeals to 1; simultaneous deals are taken only when RSI is not overbought)
 
 QFL% = ATRp * QFLP_SCALAR
 
