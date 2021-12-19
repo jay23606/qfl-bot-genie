@@ -9,11 +9,11 @@ MaxActiveDeals =  RSI_SCALAR*(70 - RSI_VALUE)
 
 QFL% = ATRp * QFLP_SCALAR
 
-(QFLP_SCALAR defaulted to 3.5 but you can increase if you want to be more picky when opening deals relative to ATR)
+(QFLP_SCALAR defaulted to 3.5 but you can increase if you want to be more picky when opening deals relative to ATRp)
 
 TP% = ATRp * TP_SCALAR
 
-(TP_SCALAR defaulted to 1.5 but you can increase if you want higher take profit relative to ATR at time deal opens)
+(TP_SCALAR defaulted to 1.5 but you can increase if you want higher take profit relative to ATRp at time deal opens)
 
 Also cycles through the QFL timeframes (original=1h, daytrade=2h, conservative=3h, position=4h) each time so that more QFL deals may be presented
 
