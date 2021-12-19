@@ -17,7 +17,7 @@ TP% = ATRp * TP_SCALAR
 
 (TP_SCALAR defaulted to 1.5 but you can increase if you want higher take profit relative to ATRp at time deal opens)
 
-Also cycles through the QFL timeframes (original=1h, daytrade=2h, conservative=3h, position=4h) each time so that more QFL deals may be presented
+Also cycles through the QFL timeframes (original=1h, daytrade=2h, conservative=3h, position=4h) each time so that more QFL deals might fill
 
 
 ## Instructions:
