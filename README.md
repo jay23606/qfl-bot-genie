@@ -25,7 +25,7 @@ Also cycles through the QFL timeframes (original=1h, daytrade=2h, conservative=3
 Create new console C# program and include your 3c api key, secret, botId, and accountId (or exchange name) for updating bot settings. This can be done with visual studio community edition (free on windows or mac) or using .NET core SDK on linux with the dotnet command.
 
 
-You will need to include XCommas.Net and Stock.Indicators nuget packages
+You will need to include XCommas.Net and Skender.Stock.Indicators nuget packages
 
 
 *Disclaimer: No idea how well this strategy will work over simply running static QFL*
