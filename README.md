@@ -5,13 +5,17 @@ Updates 3Commas QFL multipair bot settings (MaxActiveDeals, Take Profit, QFL Per
 
 MaxActiveDeals =  RSI_SCALAR*(70 - RSI_VALUE)
 
-(RSI_SCALAR defaulted to 1.0)
+(RSI_SCALAR defaulted to 1.0--this lets you increase or decrease deals relative to RSI value)
 
-QFL% = ATRp * 3.5
+QFL% = ATRp * QFLP_SCALAR
 
-TP% = ATRp * 1.5
+(QFLP_SCALAR defaulted to 3.5 but you can increase if you want to be more picky when opening deals relative to ATR)
 
-Also cycles through the QFL timeframes (original=1h, daytrade=2h, conservative=3h, position=4h) each time
+TP% = ATRp * TP_SCALAR
+
+(TP_SCALAR defaulted to 1.5 but you can increase if you want higher take profit relative to ATR at time deal opens)
+
+Also cycles through the QFL timeframes (original=1h, daytrade=2h, conservative=3h, position=4h) each time so that more QFL deals may be presented
 
 Instructions:
 
