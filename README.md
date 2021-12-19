@@ -3,9 +3,11 @@
 
 ## Updates 3Commas QFL multipair bot settings (MaxActiveDeals, Take Profit, QFL Percentage) based on BTC's 1d RSI and 1h ATRp every few minutes
 
-MaxActiveDeals =  RSI_SCALAR*(70 - RSI_VALUE)
+MaxActiveDeals =  RSI_SCALAR*(RSI_UPPER - RSI_VALUE)
 
 (RSI_SCALAR defaulted to 1.0--this lets you increase or decrease deals relative to RSI value)
+
+(RSI_UPPER defaulted TO 70--once the RSI of BTC approaches this value we set MaxActiveDeals to 1)
 
 QFL% = ATRp * QFLP_SCALAR
 
