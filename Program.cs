@@ -14,8 +14,9 @@ namespace qflg
     {
         //important constants
         static float RSI_UPPER = 70f; //if BTC 1d RSI >= 69 then we only open a single active qfl deal
+        static float RSI_LOWER = 20f;
         static float RSI_SCALAR = 1.0f; //increasing will produce more deals and reducing will produce less deals
-        static decimal QFLP_SCALAR = 3.5m; //factor we multiply by BTC 1h ATRp to determine QFL percentage
+        static decimal QFLP_SCALAR = 5m; //factor we multiply by BTC 1h ATRp to determine QFL percentage
         static decimal TP_SCALAR = 1.5m; //factor we multiply by BTC 1h ATRp to determine Take Profit percentage
 
         //update with your 3c api key/secret and exchange info
@@ -23,7 +24,7 @@ namespace qflg
         static string secret = "xxx";
         static string market = "kucoin";
         static int accountId = 0;
-        static int botId = 6486199;
+        static int botId = 1234567;
         public static XCommasApi api;
 
         static void Main() { MainAsync().GetAwaiter().GetResult(); }
@@ -42,7 +43,11 @@ namespace qflg
 
                     List<RsiResult> resultsDay = quotesDay.GetRsi().ToList();
                     int lastDay = resultsDay.Count - 1;
-                    int deals = (int)(RSI_SCALAR * (RSI_UPPER - (float)resultsDay[lastDay].Rsi));
+
+                    float rsi = (float)resultsDay[lastDay].Rsi;
+                    if (RSI_LOWER > rsi) rsi = RSI_LOWER;
+
+                    int deals = (int)(RSI_SCALAR * (RSI_UPPER - rsi)); //maximum of 50 deals when RSI is 20
                     if (deals < 1) deals = 1;
 
                     Console.WriteLine($"BTC 1 day RSI @ {DateTime.UtcNow.ToShortTimeString()} UTC is {Decimal.Round((decimal)resultsDay[lastDay].Rsi, 2)} -> set MaxActiveDeals = {RSI_SCALAR}*({RSI_UPPER} - RSI) = {deals}");
