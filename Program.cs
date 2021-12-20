@@ -14,7 +14,7 @@ namespace qflg
     {
         //important constants
         static float RSI_UPPER = 70f; //if BTC 1d RSI >= 69 then we only open a single active qfl deal
-        static float RSI_LOWER = 20f;
+        static float RSI_LOWER = 20f; //70-20=50 maximum active deals
         static float RSI_SCALAR = 1.0f; //increasing will produce more deals and reducing will produce less deals
         static decimal QFLP_SCALAR = 5m; //factor we multiply by BTC 1h ATRp to determine QFL percentage
         static decimal TP_SCALAR = 1.5m; //factor we multiply by BTC 1h ATRp to determine Take Profit percentage
