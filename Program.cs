@@ -23,7 +23,7 @@ namespace qflg
         static string secret = "xxx";
         static string market = "kucoin";
         static int accountId = 0;
-        static int botId = 6486100;
+        static int botId = 6486199;
         public static XCommasApi api;
 
         static void Main() { MainAsync().GetAwaiter().GetResult(); }
