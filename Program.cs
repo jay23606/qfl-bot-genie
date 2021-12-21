@@ -63,8 +63,8 @@ namespace qflg
 
                     var bots = await api.GetBotsAsync(limit: 1000, accountId: accountId, botId: botId);
                     Bot bot = null;
-                    //passing botId to GetBotsAsync doesn't work so need to find the right bot by name I guess
-                    foreach (Bot b in bots.Data) if (b.Name == "KC200 QFL") { bot = b; break; }
+                    //passing botId to GetBotsAsync doesn't work right apparently
+                    foreach (Bot b in bots.Data) if (b.Id == botId) { bot = b; break; }
 
                     //loop through qfl timeframes so that there is more potential deals
                     foreach (BotStrategy bs in bot.Strategies)
