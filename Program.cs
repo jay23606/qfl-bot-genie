@@ -14,10 +14,10 @@ namespace qflg
     {
         //important constants
         static float RSI_UPPER = 70f; //if BTC 1d RSI >= 69 then we only open a single active qfl deal
-        static float RSI_LOWER = 20f; //70-20=50 maximum active deals
+        static float RSI_LOWER = 20f;
         static float RSI_SCALAR = 1.0f; //increasing will produce more deals and reducing will produce less deals
-        static decimal QFLP_SCALAR = 5m; //factor we multiply by BTC 1h ATRp to determine QFL percentage
-        static decimal TP_SCALAR = 1.5m; //factor we multiply by BTC 1h ATRp to determine Take Profit percentage
+        static decimal QFLP_SCALAR = 3.5m; //factor we multiply by BTC 1h ATRp to determine QFL percentage
+        static decimal TP_SCALAR = 2m; //factor we multiply by BTC 1h ATRp to determine Take Profit percentage
 
         //update with your 3c api key/secret and exchange info
         static string key = "xxx";
@@ -61,9 +61,10 @@ namespace qflg
 
                     Console.WriteLine($"BTC 1 hour ATRp @ {DateTime.UtcNow.ToShortTimeString()} UTC is {Decimal.Round((decimal)resultsHour[lastHour].Atrp, 2)} -> set QFL % = ATRp*{QFLP_SCALAR} = {qflp}, set TP % = ATRp*{TP_SCALAR} = {tp}");
 
-                    var bots = await api.GetBotsAsync(limit: 1, accountId: accountId, botId: botId);
-
-                    Bot bot = bots.Data[0];
+                    var bots = await api.GetBotsAsync(limit: 1000, accountId: accountId, botId: botId);
+                    Bot bot = null;
+                    //passing botId to GetBotsAsync doesn't work so need to find the right bot by name I guess
+                    foreach (Bot b in bots.Data) if (b.Name == "KC200 QFL") { bot = b; break; }
 
                     //loop through qfl timeframes so that there is more potential deals
                     foreach (BotStrategy bs in bot.Strategies)
