@@ -61,10 +61,8 @@ namespace qflg
 
                     Console.WriteLine($"BTC 1 hour ATRp @ {DateTime.UtcNow.ToShortTimeString()} UTC is {Decimal.Round((decimal)resultsHour[lastHour].Atrp, 2)} -> set QFL % = ATRp*{QFLP_SCALAR} = {qflp}, set TP % = ATRp*{TP_SCALAR} = {tp}");
 
-                    var bots = await api.GetBotsAsync(limit: 1000, accountId: accountId, botId: botId);
-                    Bot bot = null;
-                    //passing botId to GetBotsAsync doesn't work right apparently
-                    foreach (Bot b in bots.Data) if (b.Id == botId) { bot = b; break; }
+                    var b = await api.ShowBotAsync(botId);
+                    Bot bot = b.Data;
 
                     //loop through qfl timeframes so that there is more potential deals
                     foreach (BotStrategy bs in bot.Strategies)
